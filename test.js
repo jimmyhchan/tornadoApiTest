@@ -82,6 +82,7 @@ test('addBody many level deep', function(t) {
   api.leaveBody();
   api.leaveBody();
   api.leaveBody(); // close the template
+  debugger;
   t.deepEqual(api.entities.bodys[0].mains, [1], 'the 0th pointing to the first');
   t.deepEqual(api.entities.bodys[1].mains, [2], 'the 1st to the 2nd');
   t.deepEqual(api.entities.bodys[2].mains, [3], 'the 2nd to the 3rd');
