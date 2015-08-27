@@ -9,7 +9,6 @@ test('adding an reference before adding a body/fragment is a no-no', function(t)
 test('adding a reference should modify element and current body', function(t) {
   var api = new Api();
   api.addBody();
-  debugger;
   api.addReference({key: 'hello'});
   api.leaveBody();
   t.equal(api.entities.elements.length, 1, 'should add a placeholder element');

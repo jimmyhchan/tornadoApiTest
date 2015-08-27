@@ -3,6 +3,14 @@ api.addBodies
 api.leaveBody
 api.leaveBodies
 
+
+api.addElement
+api.leaveElement
+
+api.addReference
+
+
+// Adding/removing body/bodies
 api.entities.bodys
 [ { mains: [ 1 ], bodies: [], fragment: 0 },
   { mains: [ 2 ], bodies: [], fragment: 1 },
@@ -20,3 +28,11 @@ api.entities.bodys
 > api.entities.fragments
 [ {}, {}, {}, {} ]
 
+
+// Adding references
+
+> api.entities.bodys[0].refs
+[ { key: 'hello', element: 0 } ]
+
+> api.entities.fragments[0]
+{ elements: [ 0 ]   
