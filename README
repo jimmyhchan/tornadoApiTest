@@ -36,3 +36,6 @@ api.entities.bodys
 
 > api.entities.fragments[0]
 { elements: [ 0 ]   
+
+> api.entities.elements
+[ { type: 'placeholder' } ]
