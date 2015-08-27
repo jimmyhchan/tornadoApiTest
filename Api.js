@@ -19,11 +19,46 @@ var Api = function() {
       entities.bodys = [b];
       entities.fragments = [f];
     }
+
+    meta.currentBody = tdHistory.current();
+    meta.currentFragment = tdHistory.current();
   }
+
+  function addElement(el) {
+    var elIndex,
+        currentFragment;
+    // add a new element
+    elHistory.enter();
+    if (entities.elements) {
+      entities.elements.push(el);
+    } else {
+      entities.elements = [el];
+    }
+
+    // connect it to the fragment
+    elIndex = elHistory.current();
+    currentFragment = entities.fragments[meta.currentFragment];
+    if (currentFragment.elements){
+      currentFragment.elements.push(elIndex);
+    } else {
+      currentFragment.elements = [elIndex];
+    }
+    meta.currentElement = elIndex;
+  }
+
+  function leaveElement() {
+    var elIndex = elHistory.current();
+    elHistory.leave();
+    var parentIndex = elHistory.current();
+    if (parentIndex >= 0) {
+      entities.elements[parentIndex].elements.push(elIndex);
+    }
+    meta.currentElement = parentIndex;
+  }
+
   return {
     addBody: function() {
-      addBodyAndFragment({mains:[], bodies: []}, {});
-      meta.currentBody = tdHistory.current();
+      addBodyAndFragment({mains:[], bodies: []}, {elements: []});
     },
     leaveBody: function() {
       var tIndex = tdHistory.current();
@@ -33,10 +68,10 @@ var Api = function() {
         entities.bodys[parentIndex].mains.push(tIndex);
       }
       meta.currentBody = parentIndex;
+      meta.currentFragment = parentIndex;
     },
     addBodies: function() {
-      addBodyAndFragment({mains:[], bodies: []}, {});
-      meta.currentBody = tdHistory.current();
+      addBodyAndFragment({mains:[], bodies: []}, {elements: []});
     },
     leaveBodies: function() {
       var tIndex = tdHistory.current();
@@ -46,9 +81,32 @@ var Api = function() {
         entities.bodys[parentIndex].bodies.push(tIndex);
       }
       meta.currentBody = parentIndex;
+      meta.currentFragment = parentIndex;
     },
     meta: meta,
     entities: entities,
+
+    //DOM elements
+    addElement: addElement,
+    leaveElement: leaveElement,
+    // references
+    addReference: function(r) {
+      // add placeholder element
+      var tIndex = meta.currentBody,
+          elIndex;
+      addElement({type:'placeholder'});
+      elIndex = meta.currentElement;
+      leaveElement();
+
+      // add reference to current body
+      r.element = elIndex;
+      currentBody = entities.bodys[tIndex];
+      if (currentBody.refs) {
+        currentBody.refs.push(r);
+      } else {
+        currentBody.refs = [r];
+      }
+    },
 
     //debugging
     _tdHistory: tdHistory,
