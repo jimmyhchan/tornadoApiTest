@@ -9,6 +9,8 @@ api.leaveElement
 
 api.addReference
 
+api.addParam
+
 
 // Adding/removing body/bodies
 api.entities.bodys
@@ -39,3 +41,13 @@ api.entities.bodys
 
 > api.entities.elements
 [ { type: 'placeholder' } ]
+
+
+// adding param (TBD: param values can be bodies so we actually should use enter leave)
+
+> api.entities.bodys
+[ { mains: [], bodies: [], fragment: 0, params: [ 0, 1, 2 ] } ]
+> api.entities.params
+[ { key: 'a', value: '1' },
+  { key: 'b', value: '2' },
+  { key: 'c', value: '3' } ]

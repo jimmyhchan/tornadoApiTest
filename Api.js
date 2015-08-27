@@ -46,6 +46,26 @@ var Api = function() {
     meta.currentElement = elIndex;
   }
 
+  function addParam(p) {
+    var currentBody = entities.bodys[meta.currentBody],
+        len,
+        paramIndex;
+    // add a row into the params table
+    if (entities.params) {
+      len = entities.params.push(p);
+      paramIndex = len - 1;
+    } else {
+      entities.params = [p];
+      paramIndex = 0;
+    }
+    // attach param to the current Body
+    if (currentBody.params) {
+      currentBody.params.push(paramIndex);
+    } else {
+      currentBody.params = [paramIndex];
+    }
+  }
+
   function leaveElement() {
     var elIndex = elHistory.current();
     elHistory.leave();
@@ -107,6 +127,7 @@ var Api = function() {
         currentBody.refs = [r];
       }
     },
+    addParam: addParam,
 
     //debugging
     _tdHistory: tdHistory,
